@@ -1,0 +1,5 @@
+// 1.20	2024-06-14T18:16:47.3190297	MC Course Mod/Tags for minecraft:block
+25d0886b81b69d42bbe56b68200555d96164c7e1 data\minecraft\tags\blocks\needs_diamond_tool.json
+b8804aa542373ae1a1dffdfe9894ce5aa7dfeb07 data\minecraft\tags\blocks\needs_iron_tool.json
+78b821323f95d2a39da78c8e495f9ea41951b6f0 data\mccourse\tags\blocks\metal_detector_detectable_blocks.json
+5e836c81cf213b9457baa31607bfd170ab97d34c data\minecraft\tags\blocks\mineable\pickaxe.json

@@ -23,6 +23,13 @@ public class ModItemGroup {
                         entries.add(ModBlocks.DEEPSLATE_PINK_GARNET_ORE);
                         entries.add(ModBlocks.NETHER_PINK_GARNET_ORE);
                         entries.add(ModBlocks.END_STONE_PINK_GARNET_ORE);
+
+                        entries.add(ModBlocks.PINK_GARNET_BUTTON);
+                        entries.add(ModBlocks.PINK_GARNET_PRESSURE_PLATE);
+
+                        entries.add(ModBlocks.PINK_GARNET_STAIRS);
+                        entries.add(ModBlocks.PINK_GARNET_SLAB);
+
                         entries.add(ModBlocks.SOUND_BLOCK);
                         entries.add(ModItems.METAL_DETECTOR);
                         entries.add(ModItems.CAULIFLOWER);

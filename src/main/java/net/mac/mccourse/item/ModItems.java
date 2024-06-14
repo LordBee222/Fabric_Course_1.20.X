@@ -3,6 +3,8 @@ package net.mac.mccourse.item;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.mac.mccourse.MCCourseMod;
 import net.mac.mccourse.item.custom.BoomHoneyItem;
+import net.mac.mccourse.item.custom.DynamiteItem;
+import net.mac.mccourse.item.custom.LavaRodItem;
 import net.mac.mccourse.item.custom.MetalDetectorItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -30,7 +32,7 @@ public class ModItems {
             new DynamiteItem(new FabricItemSettings().maxCount(16)));
 
     public static final Item BOOM_SLIME = registerItem("boom_slime",
-            new BoomSlimeItem(new FabricItemSettings().fireproof().maxCount(16)));
+            new LavaRodItem(new FabricItemSettings().fireproof().maxCount(16)));
 
     public static final Item BOOM_HONEY = registerItem("boom_honey",
             new BoomHoneyItem(new FabricItemSettings().maxCount(16)));

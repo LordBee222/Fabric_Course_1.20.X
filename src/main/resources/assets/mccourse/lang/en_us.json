@@ -24,6 +24,10 @@
   "block.mccourse.nether_pink_garnet_ore": "Nether Pink Garnet Ore",
   "block.mccourse.end_stone_pink_garnet_ore": "End Stone Pink Garnet Ore",
   "block.mccourse.sound_block": "Sound Block",
+  "block.mccourse.pink_garnet_stairs": "Pink Garnet Stairs",
+  "block.mccourse.pink_garnet_slab": "Pink Garnet Slab",
+  "block.mccourse.pink_garnet_button": "Pink Garnet Button",
+  "block.mccourse.pink_garnet_pressure_plate": "Pink Garnet Pressure Plate",
 
   "itemgroup.pink_garnet_group": "Pink Garnet Group",
 
