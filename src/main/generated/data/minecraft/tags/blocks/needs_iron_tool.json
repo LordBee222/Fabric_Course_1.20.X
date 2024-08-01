@@ -5,6 +5,11 @@
     "mccourse:pink_garnet_block",
     "mccourse:raw_pink_garnet_block",
     "mccourse:pink_garnet_stairs",
-    "mccourse:pink_garnet_slab"
+    "mccourse:pink_garnet_slab",
+    "mccourse:pink_garnet_fence",
+    "mccourse:pink_garnet_fence_gate",
+    "mccourse:pink_garnet_wall",
+    "mccourse:pink_garnet_door",
+    "mccourse:pink_garnet_trapdoor"
   ]
 }

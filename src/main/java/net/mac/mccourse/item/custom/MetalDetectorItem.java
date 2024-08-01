@@ -1,5 +1,8 @@
 package net.mac.mccourse.item.custom;
 
+import net.mac.mccourse.item.ModItems;
+import net.mac.mccourse.sound.ModSounds;
+import net.mac.mccourse.util.InventoryUtil;
 import net.mac.mccourse.util.ModTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -10,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -40,6 +44,13 @@ public class MetalDetectorItem extends Item {
                     BlockPos valuableBlockPos = positionClicked.down(i);
                     outputValuableCoordinates(valuableBlockPos, player, block);
                     foundBlock = true;
+
+                    if (InventoryUtil.hasPlayerStackInInventory(player, ModItems.DATA_TABLET)){
+                        addNBTDataToDataTablet(player, positionClicked.down(i), block);
+                    }
+                    context.getWorld().playSound(null, positionClicked, ModSounds.METAL_DETECTOR_FOUND_ORE,
+                            SoundCategory.BLOCKS, 1f, 1f);
+
                     causeExplosion(context.getWorld(), valuableBlockPos, player);
 
                     break;
@@ -55,13 +66,22 @@ public class MetalDetectorItem extends Item {
         return ActionResult.SUCCESS;
     }
 
+    private void addNBTDataToDataTablet(PlayerEntity player, BlockPos position, Block block) {
+        ItemStack dataTabletStack = player.getInventory().getStack(InventoryUtil.getFirstInventoryIndex(player, ModItems.DATA_TABLET));
+        NbtCompound nbtData = new NbtCompound();
+
+        nbtData.putString("mccourse.last_valuable_found", block.getName().getString() + " at " +
+                "(" + position.getX() + ", " + position.getY() + ", " + position.getZ() + ")" );
+
+        dataTabletStack.setNbt(nbtData);
+    }
+
     private void outputValuableCoordinates(BlockPos position, PlayerEntity player, Block block) {
         player.sendMessage(Text.literal("Valuable Found " + block.getName().getString() + " at " +
                 "(" + position.getX() + ", " + position.getY() + ", " + position.getZ() + ")"));
     }
 
     private boolean isValuableBlock(BlockState blockState) {
-        Block block = blockState.getBlock();
         return blockState.isIn(ModTags.Blocks.METAL_DETECTOR_DETECTABLE_BLOCKS);
     }
 
