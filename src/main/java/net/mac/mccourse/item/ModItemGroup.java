@@ -53,7 +53,10 @@ public class ModItemGroup {
                         entries.add(ModItems.POWDERED_POTION);
                         entries.add(ModBlocks.PETUNIA);
                         entries.add(ModItems.SCOPED_CROSSBOW);
-
+                        entries.add(ModItems.SLINGER);
+                        entries.add(ModItems.DICE);
+                        entries.add(ModItems.DYNAMITE);
+                        entries.add(ModItems.BOOM_SLIME);
                     }).build());
 
 

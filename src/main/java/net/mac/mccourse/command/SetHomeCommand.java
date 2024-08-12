@@ -26,8 +26,7 @@ public class SetHomeCommand {
         BlockPos playerPos = context.getSource().getPlayer().getBlockPos();
         String posString = "(" + playerPos.getX() +  ", " + playerPos.getY() + ", " + playerPos.getZ() + ")";
 
-        player.getPersistentData().putIntArray("homepos",
-                new int[] { playerPos.getX(), playerPos.getY(), playerPos.getZ() });
+        player.getPersistentData().putIntArray("homepos", new int[] { playerPos.getX(), playerPos.getY(), playerPos.getZ() });
 
         context.getSource().sendFeedback(() -> Text.literal("Set Home At " + posString), true);
         return 1;

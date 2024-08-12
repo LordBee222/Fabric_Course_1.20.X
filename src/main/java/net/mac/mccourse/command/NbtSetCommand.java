@@ -9,6 +9,8 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.Potions;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -26,6 +28,8 @@ public class NbtSetCommand {
         PlayerEntity playerEntity = context.getSource().getPlayer();
         ItemStack stack = playerEntity.getMainHandStack();
         NbtCompound nbtCommand = stack.getOrCreateNbt();
+        Potion Water = Potions.WATER;
+        context.getSource().sendFeedback(() -> Text.literal(String.valueOf(Water.getEffects())), true);
         if (stack == null){
             context.getSource().sendFeedback(() -> Text.literal("No Item Selected!"), true);
             return -1;

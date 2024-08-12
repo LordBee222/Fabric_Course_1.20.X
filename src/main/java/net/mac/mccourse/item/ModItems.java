@@ -69,6 +69,23 @@ public class ModItems {
     public static final Item SCOPED_CROSSBOW = registerItem("scoped_crossbow",
             new ScopedCrossbowItem(new FabricItemSettings().maxCount(1)));
 
+    public static final Item SLINGER = registerItem("slinger",
+            new SlingerItem(new FabricItemSettings().maxCount(1)));
+
+    public static final Item DICE = registerItem("dice",
+            new DiceItem(new FabricItemSettings()));
+
+    public static final Item DYNAMITE = registerItem("dynamite",
+            new DynamiteItem(new FabricItemSettings().maxCount(16)));
+
+    public static final Item BOOM_SLIME = registerItem("boom_slime",
+            new BoomSlimeItem(new FabricItemSettings().maxCount(16)));
+
+    public static final Item CEREMONIAL_BLADE = registerItem("ceremonial_blade",
+            new CeremonialBladeItem(ToolMaterials.NETHERITE, -2, 2, new FabricItemSettings()));
+
+
+    /*
     public static final Item CHARGED_POTION = registerItem("charged_potion",
             new ChargedPotionItem(new FabricItemSettings().maxCount(1)));
 
@@ -77,6 +94,8 @@ public class ModItems {
 
     public static final Item CHARGED_LINGERING_POTION = registerItem("charged_lingering_potion",
             new ChargedLingeringPotionItem(new FabricItemSettings().maxCount(1)));
+
+     */
 
     private static Item registerItem(String name, Item item){
         return Registry.register(Registries.ITEM, new Identifier(MCCourseMod.MOD_ID, name), item);

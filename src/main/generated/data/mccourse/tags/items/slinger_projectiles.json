@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:ender_pearl",
+    "minecraft:egg",
+    "minecraft:snowball",
+    "minecraft:fire_charge"
+  ]
+}

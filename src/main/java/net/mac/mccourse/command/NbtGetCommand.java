@@ -7,6 +7,7 @@ import net.mac.mccourse.util.IEntityDataSaver;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -33,7 +34,7 @@ public class NbtGetCommand {
             context.getSource().sendFeedback(() -> Text.literal("Item Contains No NBT"), true);
             return -1;
         } else {
-            context.getSource().sendFeedback(() -> Text.literal(nbtCommand.asString()), true);
+                context.getSource().sendFeedback(() -> Text.literal(nbtCommand.asString()), true);
             return 1;
         }
     }

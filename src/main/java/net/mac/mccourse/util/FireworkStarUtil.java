@@ -33,6 +33,14 @@ public class FireworkStarUtil {
             int invisibilityDuration = 100;
             world.playSound(null, x, y, z, SoundEvents.ENTITY_FIREWORK_ROCKET_BLAST, SoundCategory.AMBIENT, 3.0f, 1.0f);
             world.addFireworkParticle(x, y, z, vec3d.x, vec3d.y, vec3d.z, nbtCompound);
+            world.addFireworkParticle(x, y, z, vec3d.x, vec3d.y, vec3d.z, nbtCompound);
+            world.addFireworkParticle(x, y, z, vec3d.x, vec3d.y, vec3d.z, nbtCompound);
+            world.addFireworkParticle(x, y, z, vec3d.x, vec3d.y, vec3d.z, nbtCompound);
+            world.addFireworkParticle(x, y, z, vec3d.x, vec3d.y, vec3d.z, nbtCompound);
+            world.addFireworkParticle(x, y, z, vec3d.x, vec3d.y, vec3d.z, nbtCompound);
+            world.addFireworkParticle(x, y, z, vec3d.x, vec3d.y, vec3d.z, nbtCompound);
+            world.addFireworkParticle(x, y, z, vec3d.x, vec3d.y, vec3d.z, nbtCompound);
+            world.addFireworkParticle(x, y, z, vec3d.x, vec3d.y, vec3d.z, nbtCompound);
 
             if (explosionNbt.getInt("Type") == 1) {
                 invisibilityDuration = 160;

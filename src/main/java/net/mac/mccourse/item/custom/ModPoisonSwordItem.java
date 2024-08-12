@@ -1,6 +1,6 @@
 package net.mac.mccourse.item.custom;
 
-import net.mac.mccourse.util.Ticker;
+import net.mac.mccourse.util.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -25,36 +25,12 @@ public class ModPoisonSwordItem extends SwordItem {
     }
 
     @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 200, 1), attacker);
-        return super.postHit(stack, target, attacker);
-    }
-
-    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        if (world instanceof ServerWorld serverWorld){
-            if (!world.isClient && !(player.getItemCooldownManager().isCoolingDown(this))) {
-                Vec3d lookVector = player.getRotationVec(1.0F);
-                player.addVelocity(lookVector.x * 2.0D, lookVector.y * 2.0D, lookVector.z * 2.0D);
-                player.velocityModified = true;
-                player.getItemCooldownManager().set(this, 40);
-                serverWorld.spawnParticles(ParticleTypes.EXPLOSION_EMITTER, player.getX(), player.getY(), player.getZ(), 1, 0, 0, 0, 0);
-                world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.NEUTRAL, 1f, 1);
-                return TypedActionResult.success(player.getStackInHand(hand));
-            }
+        IPlayerDoubleJumpSaver playerJumpData = (IPlayerDoubleJumpSaver) player;
+        if (DoubleJumpUtil.canJump(playerJumpData, player)){
+            DoubleJumpUtil.use(playerJumpData, player);
         }
-        return TypedActionResult.pass(player.getStackInHand(hand));
+        return super.use(world, player, hand);
     }
 
-    private void emitInitialSmokeCircle(ServerWorld world, PlayerEntity player) {
-        Vec3d playerPos = player.getPos();
-        double radius = 2.0;
-        for (int i = 0; i < 360; i += 10) {
-            double angle = Math.toRadians(i);
-            double xOffset = Math.cos(angle) * radius;
-            double zOffset = Math.sin(angle) * radius;
-            Vec3d particlePos = playerPos.add(xOffset, 0, zOffset);
-            world.spawnParticles(ParticleTypes.EXPLOSION_EMITTER, particlePos.x, particlePos.y, particlePos.z, 1, 0.1, 0.1, 0.1, 0.1);
-        }
-    }
 }

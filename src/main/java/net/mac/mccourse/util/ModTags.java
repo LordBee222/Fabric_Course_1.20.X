@@ -26,6 +26,9 @@ public class ModTags {
 
 
     public static class Items{
+        public static final TagKey<Item> SLINGER_PROJECTILES =
+                createItemTag("slinger_projectiles");
+
         private static TagKey<Item> createItemTag(String name){
             return TagKey.of(RegistryKeys.ITEM, new Identifier(MCCourseMod.MOD_ID, name));
         }

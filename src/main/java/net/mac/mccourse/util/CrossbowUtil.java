@@ -14,15 +14,9 @@ public class CrossbowUtil {
 
     public static void clearProjectiles(ItemStack crossbow) {
         NbtCompound nbtCompound = crossbow.getNbt();
-        MCCourseMod.LOGGER.info("BEFORE CLEAR: " + nbtCompound);
         if (nbtCompound != null) {
             NbtList nbtList = nbtCompound.getList(CHARGED_PROJECTILES_KEY, NbtElement.LIST_TYPE);
-            MCCourseMod.LOGGER.info("List BEFORE CLEAR: " + nbtList);
-
             nbtList.clear();
-            MCCourseMod.LOGGER.info("After CLEAR: " + nbtCompound);
-            MCCourseMod.LOGGER.info("List After CLEAR: " + nbtList);
-
             nbtCompound.put(CHARGED_PROJECTILES_KEY, nbtList);
         }
     }

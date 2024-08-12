@@ -20,7 +20,10 @@ public abstract class ItemColorsMixin {
         at = @At("RETURN"))
 private static void injectCustomCode(BlockColors blockColors, CallbackInfoReturnable<ItemColors> cir) {
     ItemColors itemColors = cir.getReturnValue();
-    itemColors.register((stack, tintIndex) -> tintIndex > 0 ? -1 : PotionUtil.getColor(stack),
+
+   /* itemColors.register((stack, tintIndex) -> tintIndex > 0 ? -1 : PotionUtil.getColor(stack),
             ModItems.CHARGED_POTION, ModItems.CHARGED_SPLASH_POTION, ModItems.CHARGED_LINGERING_POTION);
+
+    */
 }
 }

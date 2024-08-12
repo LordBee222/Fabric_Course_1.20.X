@@ -1,4 +1,4 @@
-// 1.20	2024-07-28T17:13:46.2923777	MC Course Mod/Model Definitions
+// 1.20	2024-08-08T09:39:16.4763169	MC Course Mod/Model Definitions
 9638169d87f42172d7d257a64965fe65d374eb80 assets\mccourse\models\item\pink_garnet_leggings_gold_trim.json
 842785d4a40b43961a4089416f559d2640213c14 assets\mccourse\models\item\pink_garnet.json
 1fe5d12b15d094f845fcd40e313b01d59d4840ab assets\mccourse\models\item\pink_garnet_chestplate_copper_trim.json
@@ -51,7 +51,6 @@ e0ed4de0c81b30e99f61ecedd57b6075627edc2d assets\mccourse\blockstates\petunia.jso
 967503bef8496f656e494a98d65bc561447f20c3 assets\mccourse\models\item\pink_garnet_helmet_emerald_trim.json
 d021a938d392f78edcb9a1b20a50ec0fe31cde68 assets\mccourse\models\block\pink_garnet_stairs.json
 a90d995e4268516359efc932a8d15d9ca59c1018 assets\mccourse\models\item\nether_pink_garnet_ore.json
-d7fb368801bfc031f9085d561b7e5f2fa2f1dc40 assets\mccourse\models\item\charged_potion.json
 d40257fb6b951185ac67b3429e4f1d6c7f170bae assets\mccourse\models\item\pink_garnet_helmet_copper_trim.json
 7c9dd404736195c7921e786c004398a5ebae3da0 assets\mccourse\blockstates\nether_pink_garnet_ore.json
 5630bf3bfb436d9925850415ab48ef16b9fc12ac assets\mccourse\models\item\pink_garnet_chestplate_lapis_trim.json

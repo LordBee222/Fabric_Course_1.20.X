@@ -2,10 +2,14 @@ package net.mac.mccourse;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.mac.mccourse.block.ModBlocks;
+import net.mac.mccourse.entity.ModEntities;
 import net.mac.mccourse.util.ModModelPredicateProvider;
-import net.mac.mccourse.util.ModTags;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.client.render.entity.PlayerEntityRenderer;
 
 public class MCCourseModClient implements ClientModInitializer {
     @Override
@@ -17,6 +21,8 @@ public class MCCourseModClient implements ClientModInitializer {
 
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.PETUNIA, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.POTTED_PETUNIA, RenderLayer.getCutout());
-
+        EntityRendererRegistry.register(ModEntities.THROWN_DICE_PROJECTILE, FlyingItemEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.DYNAMITE, FlyingItemEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.BOOM_SLIME, FlyingItemEntityRenderer::new);
     }
 }

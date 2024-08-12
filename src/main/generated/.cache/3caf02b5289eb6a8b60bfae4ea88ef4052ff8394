@@ -1,6 +1,6 @@
-// 1.20	2024-07-28T17:13:46.3014012	MC Course Mod/Block Loot Tables
-bd432dfab5ccc71fe8ff914648033c4ea86a1576 data\mccourse\loot_tables\blocks\pink_garnet_block.json
+// 1.20	2024-08-08T09:39:16.4843296	MC Course Mod/Block Loot Tables
 8dc3330aacc17cae0c81c0621bc13294377a8a67 data\mccourse\loot_tables\blocks\pink_garnet_fence_gate.json
+bd432dfab5ccc71fe8ff914648033c4ea86a1576 data\mccourse\loot_tables\blocks\pink_garnet_block.json
 142ad9fe4ed1e88947043cb7c17f77494b2f2a27 data\mccourse\loot_tables\blocks\nether_pink_garnet_ore.json
 1596b2f7b9139ee7f423899999a5483e62b88058 data\mccourse\loot_tables\blocks\cauliflower_crop.json
 358a7e975221d81d8106d2c79d09223f40f75a4d data\mccourse\loot_tables\blocks\end_stone_pink_garnet_ore.json

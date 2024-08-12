@@ -27,5 +27,15 @@ public class ModModelPredicateProvider {
 
         ModelPredicateProviderRegistry.register(ModItems.SCOPED_CROSSBOW, new Identifier("firework"), (stack, world, entity, seed) -> CrossbowItem.hasProjectile(stack, Items.FIREWORK_ROCKET) ? 1.0F : 0.0F);
 
+
+
+        ModelPredicateProviderRegistry.register(ModItems.SLINGER, new Identifier("pull"), ((stack, world, entity, seed) -> {
+            if (entity == null) return 0.0F;
+            return entity.getActiveItem() != stack ? 0.0F : (stack.getMaxUseTime() - entity.getItemUseTimeLeft()) / 20.0F;
+        }));
+        ModelPredicateProviderRegistry.register(ModItems.SLINGER, new Identifier("pulling"), (stack, world, entity, seed) -> {
+            if (entity == null) return 0.0F;
+            return entity.isUsingItem() && entity.getActiveItem() == stack ? 1.0F : 0.0F;
+        });
     }
 }

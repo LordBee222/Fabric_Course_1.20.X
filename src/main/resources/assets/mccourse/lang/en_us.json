@@ -20,6 +20,12 @@
   "item.mccourse.data_tablet":"Data Tablet",
   "item.mccourse.powdered_potion":"Powdered Potion",
   "item.mccourse.metal_detector.no_valuables": "No Valuables Found",
+  "item.mccourse.dice": "Dice",
+  "item.mccourse.dynamite": "Dynamite",
+  "item.mccourse.boom_slime": "Boom Slime",
+  "item.mccourse.slinger": "Slinger",
+
+
 
   "block.mccourse.pink_garnet_block": "Block of Pink Garnet",
   "block.mccourse.raw_pink_garnet_block": "Block of Raw Pink Garnet",
@@ -50,11 +56,24 @@
   "enchantment.mccourse.scope": "Scope",
   "enchantment.mccourse.sonic": "Sonic",
   "enchantment.mccourse.forceful": "Forceful",
+  "enchantment.mccourse.trigger_happy": "Trigger Happy",
+  "enchantment.mccourse.compacity": "Compacity",
+  "enchantment.mccourse.splashing": "Splashing",
+  "enchantment.mccourse.lightweight": "Lightweight",
+  "enchantment.mccourse.scatter_throw": "Scatter Throw",
+  "enchantment.mccourse.reservoir": "Reservoir",
+  "enchantment.mccourse.impact": "Impact",
+  "enchantment.mccourse.oceans_wrath": "Oceans Wrath",
+
+  "enchantment.minecraft.channeling": "Static Discharge",
+
 
   "effect.mccourse.totem_sickness": "Totem Sickness",
+  "effect.mccourse.soaked": "Soaked",
+  "effect.mccourse.charged": "Charged",
+
 
   "sounds.mccourse.metal_detector_found_ore": "Metal Detector Ore Found",
-  "item.minecraft.splash_potion.effect.water": "Charged Water Bottle",
 
   "item.minecraft.potion.effect.totem_sickness": "Potion of Totem Sickness",
   "item.minecraft.splash_potion.effect.totem_sickness": "Splash Potion of Totem Sickness",
@@ -133,5 +152,10 @@
   "item.mccourse.charged_lingering_potion.effect.turtle_master": "Charged Lingering Potion of Turtle Master",
   "item.mccourse.charged_lingering_potion.effect.water": "Charged Water Bottle",
   "item.mccourse.charged_lingering_potion.effect.water_breathing": "Charged Lingering Potion of Water Breathing",
-  "item.mccourse.charged_lingering_potion.effect.weakness": "Charged Lingering Potion of Weakness"
+  "item.mccourse.charged_lingering_potion.effect.weakness": "Charged Lingering Potion of Weakness",
+
+
+  "key.mccourse.dash_key": "Dash",
+  "key.mccourse.double_jump_key": "Double Jump",
+  "key.mccourse.category": "Rethinking Combat"
 }
