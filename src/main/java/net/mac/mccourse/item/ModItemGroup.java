@@ -57,6 +57,12 @@ public class ModItemGroup {
                         entries.add(ModItems.DICE);
                         entries.add(ModItems.DYNAMITE);
                         entries.add(ModItems.BOOM_SLIME);
+                        entries.add(ModItems.MARSHMALLOW);
+                        entries.add(ModItems.MARSHMALLOW_ON_STICK);
+                        entries.add(ModItems.SNIPER);
+                        entries.add(ModItems.BOMB);
+                        entries.add(ModItems.IMPACT_BOMB);
+                        entries.add(ModItems.PORCUPINE_SPAWN_EGG);
                     }).build());
 
 

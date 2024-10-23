@@ -1,7 +1,11 @@
 package net.mac.mccourse.item.custom;
 
+import net.mac.mccourse.entity.ModEntities;
+import net.mac.mccourse.entity.custom.BombEntity;
 import net.mac.mccourse.entity.custom.DiceProjectileEntity;
 import net.mac.mccourse.entity.custom.DynamiteEntity;
+import net.mac.mccourse.entity.custom.StickyExplosiveEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,6 +15,8 @@ import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+
+import java.util.Objects;
 
 public class DynamiteItem extends Item {
     public DynamiteItem(Settings settings) {
@@ -22,10 +28,12 @@ public class DynamiteItem extends Item {
         ItemStack itemStack = user.getStackInHand(hand);
         world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.NEUTRAL, 1f, 1f);
         if (!world.isClient) {
-            DynamiteEntity dynamiteEntity = new DynamiteEntity(user, world);
-            dynamiteEntity.setItem(itemStack);
-            dynamiteEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 0.5f, 0f);
-            world.spawnEntity(dynamiteEntity);
+            BombEntity entity = new BombEntity(user, user.getWorld(), ModEntities.AMETHYST_SHARD, Math.round(50F), 1f);
+            entity.setItem(this.getDefaultStack());
+            entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
+            entity.setPos(user.getX(), user.getY() + (double) user.getStandingEyeHeight() - 0.10000000149011612D, user.getZ());
+            entity.setOwner(user);
+            world.spawnEntity(entity);
         }
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         if (!user.getAbilities().creativeMode) {

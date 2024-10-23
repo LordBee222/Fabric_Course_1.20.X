@@ -23,7 +23,7 @@ public class BoomSlimeItem extends Item {
         world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_BREAK, SoundCategory.NEUTRAL, 1f, 1f);
         if (!world.isClient) {
             BoomSlimeEntity boomSlimeEntity = new BoomSlimeEntity(user, world);
-            boomSlimeEntity.setItem(itemStack);
+            //boomSlimeEntity.setItem(itemStack);
             boomSlimeEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, 0.5f, 0f);
             world.spawnEntity(boomSlimeEntity);
         }

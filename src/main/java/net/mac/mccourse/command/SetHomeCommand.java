@@ -5,6 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.mac.mccourse.util.IEntityDataSaver;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -31,4 +32,5 @@ public class SetHomeCommand {
         context.getSource().sendFeedback(() -> Text.literal("Set Home At " + posString), true);
         return 1;
     }
+
 }

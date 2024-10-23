@@ -8,8 +8,11 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.BiConsumer;
 
 public class DashUtil {
     public static final String hasDashedKey = "hasDashed";
@@ -42,9 +45,9 @@ public class DashUtil {
         Vec3d velocity = player.getRotationVec(1.0F).normalize();
         player.setVelocity(velocity.getX() , velocity.getY(), velocity.getZ());
         player.fallDistance = 0;
-        player.playSound(SoundEvents.ENTITY_GOAT_LONG_JUMP, 1, 1);
+        player.playSound(SoundEvents.PARTICLE_SOUL_ESCAPE, 1, 1);
         for (int i = 0; i < 8; i++) {
-            player.getWorld().addParticle(ParticleTypes.CLOUD, player.getParticleX(1), player.getRandomBodyY(), player.getParticleZ(1), 0, 0, 0);
+            player.getWorld().addParticle(ParticleTypes.SOUL, player.getParticleX(1), player.getRandomBodyY(), player.getParticleZ(1), 0, 0, 0);
         }
     }
 }

@@ -1,4 +1,6 @@
 {
+  "item.mccourse.porcupine_spawn_egg": "Porcupine Spawn Egg",
+
   "item.mccourse.pink_garnet": "Pink Garnet",
   "item.mccourse.raw_pink_garnet": "Raw Pink Garnet",
   "item.mccourse.metal_detector": "Metal Detector",
@@ -24,6 +26,11 @@
   "item.mccourse.dynamite": "Dynamite",
   "item.mccourse.boom_slime": "Boom Slime",
   "item.mccourse.slinger": "Slinger",
+  "item.mccourse.marshmallow": "Marshmallow",
+  "item.mccourse.marshmallow_on_stick": "Marshmallow on a Stick",
+  "mccourse.item.marshmallow_on_stick.tooltip.toasted": "Toasted",
+  "mccourse.item.marshmallow_on_stick.tooltip.golden": "Golden",
+  "mccourse.item.marshmallow_on_stick.tooltip.burnt": "Burnt",
 
 
 
@@ -71,6 +78,7 @@
   "effect.mccourse.totem_sickness": "Totem Sickness",
   "effect.mccourse.soaked": "Soaked",
   "effect.mccourse.charged": "Charged",
+  "effect.mccourse.stoned": "Stoned",
 
 
   "sounds.mccourse.metal_detector_found_ore": "Metal Detector Ore Found",
@@ -157,5 +165,7 @@
 
   "key.mccourse.dash_key": "Dash",
   "key.mccourse.double_jump_key": "Double Jump",
-  "key.mccourse.category": "Rethinking Combat"
+  "key.mccourse.category": "Rethinking Combat",
+  "key.mccourse.ads_key": "ADS"
+
 }

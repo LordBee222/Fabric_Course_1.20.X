@@ -4,36 +4,17 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BrewingRecipeRegisterMixin",
-    "CrossbowGunMixin$ForcefulEnchantmentMixin",
-    "CrossbowGunMixin$MagazineEnchantmentMixin",
-    "CrossbowGunMixin$SonicEnchantmentMixin",
     "FireworkRocketEntityMixin",
-    "ItemEntityMixin",
-    "ModEntityDataSaverMixin",
-    "PersistentProjectileEntityMixin",
-    "PotionItemMixin",
-    "TotemMixin",
-    "Trident.ImpalingMixin$MakeImpalingGreatAgain",
-    "Trident.OceansWrathMixin$IncreaseDamageWhenWet",
-    "Trident.PlayerDashDataSaver",
-    "Trident.PlayerDoubleJumpDataSaver",
-    "Trident.PlayerEntityMixin",
-    "Trident.ReservoirMixin$ReservoirApplyChargesMixin",
-    "Trident.SoakedMixin$ApplySoakedInWetSituation",
-    "Trident.SoakedMixin$SoakedBlockVanillaEffectParticlesMixin",
-    "Trident.SoakedMixin$SoakedDripParticlesMixin",
-    "Trident.SoakedMixin$SoakedNoParticlesColorFixMixin",
-    "Trident.SoakedMixin$TridentEntityMixin",
-    "Trident.SplashingMixin$ApplySoakedEffect",
-    "Trident.TridentItemMixin$OverrideTridentOnStoppedUsing",
-    "Trident.Accessor.TridentEntityAccessor"
+    "StuckAmethystMixin$ShardBehavorMixin",
+    "TridentEntityAccessor",
+    "TridentMixin$LodgeTridentToTargetMixin",
+    "TridentMixin$TridentBehaviorMixin",
+    "TridentMixin$TridentEntityNBTMixin"
   ],
   "client": [
     "ItemColorsMixin",
-    "ScopeEnchantmentMixin$ClientPlayerEntityMixin",
-    "ScopeEnchantmentMixin$GameRendererMixin",
-    "ScopeEnchantmentMixin$InGameHudMixin",
-    "ScopeEnchantmentMixin$MouseMixin"
+    "StuckAmethystMixin$ShardPlayerRendererMixin",
+    "TridentMixin$PlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

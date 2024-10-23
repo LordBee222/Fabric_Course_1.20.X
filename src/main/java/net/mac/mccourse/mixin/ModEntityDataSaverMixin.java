@@ -1,6 +1,7 @@
 package net.mac.mccourse.mixin;
 
 import net.mac.mccourse.util.IEntityDataSaver;
+import net.mac.mccourse.util.IEntityLodgedTridentSaver;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,8 +11,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
-public abstract class ModEntityDataSaverMixin implements IEntityDataSaver {
+public abstract class ModEntityDataSaverMixin implements IEntityDataSaver, IEntityLodgedTridentSaver {
     private NbtCompound persistentData;
+    private NbtCompound lodgedTridents;
+
 
     @Override
     public NbtCompound getPersistentData() {
@@ -19,6 +22,14 @@ public abstract class ModEntityDataSaverMixin implements IEntityDataSaver {
             this.persistentData = new NbtCompound();
         }
         return persistentData;
+    }
+
+    @Override
+    public NbtCompound getLodgedTridents() {
+        if(this.lodgedTridents == null){
+            this.lodgedTridents = new NbtCompound();
+        }
+        return lodgedTridents;
     }
 
     @Inject(method = "writeNbt", at = @At("HEAD"))

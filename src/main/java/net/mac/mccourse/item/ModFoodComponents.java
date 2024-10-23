@@ -7,4 +7,12 @@ import net.minecraft.item.FoodComponent;
 public class ModFoodComponents {
     public static final FoodComponent CAULIFLOWER = new FoodComponent.Builder().hunger(4).saturationModifier(0.5f)
             .statusEffect(new StatusEffectInstance(StatusEffects.GLOWING), 0.25f).build();
+
+    public static final FoodComponent MARSHMALLOW = new FoodComponent
+            .Builder()
+            .hunger(4)
+            .saturationModifier(0.5f)
+            .snack()
+            .alwaysEdible()
+            .build();
 }

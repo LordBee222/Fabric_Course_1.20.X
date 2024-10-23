@@ -17,6 +17,14 @@ public class ModEffects {
     public static final StatusEffect CHARGED = registerStatusEffect("charged",
             new ChargedEffect(StatusEffectCategory.NEUTRAL, 3694022));
 
+    public static final StatusEffect STONED = registerStatusEffect("stoned",
+            new StonedEffect(StatusEffectCategory.HARMFUL, 3694022));
+
+    public static final StatusEffect RIVER_STYX = registerStatusEffect("river_styx",
+            new UnleashedEffect(StatusEffectCategory.BENEFICIAL, 3694022));
+
+    public static final StatusEffect SHATTERED = registerStatusEffect("shattered",
+            new ShatteredEffect(StatusEffectCategory.HARMFUL, 3694022));
 
     private static StatusEffect registerStatusEffect(String name, StatusEffect statusEffect){
         return Registry.register(Registries.STATUS_EFFECT, new Identifier(MCCourseMod.MOD_ID, name), statusEffect);

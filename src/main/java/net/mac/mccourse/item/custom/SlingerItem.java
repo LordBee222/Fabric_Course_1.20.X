@@ -2,6 +2,7 @@ package net.mac.mccourse.item.custom;
 
 import net.mac.mccourse.MCCourseMod;
 import net.mac.mccourse.entity.custom.BoomSlimeEntity;
+import net.mac.mccourse.entity.custom.CustomEndCrystalEntity;
 import net.mac.mccourse.entity.custom.DiceProjectileEntity;
 import net.mac.mccourse.entity.custom.DynamiteEntity;
 import net.mac.mccourse.item.ModItems;
@@ -40,10 +41,9 @@ public class SlingerItem extends RangedWeaponItem implements Vanishable {
      /*********************************************************************************************************/
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (!(user instanceof PlayerEntity)) {
+        if (!(user instanceof PlayerEntity playerEntity)) {
             return;
         }
-        PlayerEntity playerEntity = (PlayerEntity) user;
         ItemStack itemStack = playerEntity.getOffHandStack();
         if (!itemStack.isEmpty() && isValidProjectile(itemStack) && !itemStack.isOf(ModItems.SLINGER)) {
             fireProjectile(world, playerEntity, itemStack, stack);
@@ -114,7 +114,6 @@ public class SlingerItem extends RangedWeaponItem implements Vanishable {
             if (!stack.getName().getString().contains("Bucket of Axolotl")){
                 axolotl.setCustomName(stack.getName());
             }
-            MCCourseMod.LOGGER.info("STACK NBT: " + stack.getNbt());
             return axolotl;
         } else if (projectileItem == Items.TADPOLE_BUCKET) {
             return new TadpoleEntity(EntityType.TADPOLE, world);
@@ -138,6 +137,8 @@ public class SlingerItem extends RangedWeaponItem implements Vanishable {
             PotionEntity potion = new PotionEntity(world, playerEntity);
             potion.setItem(stack);
             return potion;
+        } else if (projectileItem == Items.END_CRYSTAL) {
+            return new CustomEndCrystalEntity(world, playerEntity);
         } else {
             ItemStack stackOf1 = stack;
             stackOf1.setCount(1);

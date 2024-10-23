@@ -27,66 +27,43 @@ import java.util.Optional;
 
 @Mixin(FireworkRocketEntity.class)
 public abstract class FireworkRocketEntityMixin {
-    double radius = 1;
-    double verticalVelocity = 0.5;
-    double horizontalVelocity = 1.25;
+    //double radius = 3;
+    //double verticalVelocity = 1.5;
+    //double horizontalVelocity = 3.75;
+
+    double radius = 9;
+    double verticalVelocity = 4.5;
+    double horizontalVelocity = 11.25;
 
     @Inject(method = "explode", at = @At("HEAD"))
     private void explode(CallbackInfo info) {
         FireworkRocketEntity fireworkEntity = (FireworkRocketEntity) (Object) this;
         World world = fireworkEntity.getWorld();
         if (!world.isClient) {
+            if (fireworkEntity.wasShotAtAngle()) {
 
-            // Check if the firework was shot from a crossbow with the custom enchantment
-            Optional<ItemStack> crossbowItem = getCrossbowItem(fireworkEntity);
-            if (crossbowItem.isPresent() && hasCustomEnchantment(crossbowItem.get())) {
+                List<Entity> entities = world.getOtherEntities(fireworkEntity, new Box(
+                        fireworkEntity.getX() - radius, fireworkEntity.getY() - radius, fireworkEntity.getZ() - radius,
+                        fireworkEntity.getX() + radius, fireworkEntity.getY() + radius, fireworkEntity.getZ() + radius
+                ));
 
-                if (fireworkEntity.wasShotAtAngle()){
-                    int jumperLevel = EnchantmentHelper.getLevel(ModEnchantments.JUMPER, crossbowItem.get());
-
-                    double jumperRadius = radius * jumperLevel;
-                    double jumperVerticalVelocity = verticalVelocity * jumperLevel;
-                    double jumperHorizontalVelocity = horizontalVelocity * jumperLevel;
-
-                    List<Entity> entities = world.getOtherEntities(fireworkEntity, new Box(
-                            fireworkEntity.getX() - jumperRadius, fireworkEntity.getY() - jumperRadius, fireworkEntity.getZ() - jumperRadius,
-                            fireworkEntity.getX() + jumperRadius, fireworkEntity.getY() + jumperRadius, fireworkEntity.getZ() + jumperRadius
-                    ));
-
-                    for (Entity entity : entities) {
-                        if (entity instanceof PlayerEntity playerEntity) {
+                for (Entity entity : entities) {
+                       /* if (entity instanceof PlayerEntity playerEntity) {
                             Vec3d knockbackDirection = playerEntity.getPos().subtract(fireworkEntity.getPos()).normalize();
-                            Vec3d addedVelocity = new Vec3d(knockbackDirection.x * jumperHorizontalVelocity, jumperVerticalVelocity, knockbackDirection.z * jumperHorizontalVelocity);
+                            Vec3d addedVelocity = new Vec3d(knockbackDirection.x * horizontalVelocity, verticalVelocity, knockbackDirection.z * horizontalVelocity);
                             playerEntity.addVelocity(addedVelocity.x, addedVelocity.y, addedVelocity.z);
                             playerEntity.velocityModified = true;
                         }
-                    }
+
+                        */
+
+                    Vec3d knockbackDirection = entity.getPos().subtract(fireworkEntity.getPos()).normalize();
+                    Vec3d addedVelocity = new Vec3d(knockbackDirection.x * horizontalVelocity, verticalVelocity, knockbackDirection.z * horizontalVelocity);
+                    entity.addVelocity(addedVelocity.x, addedVelocity.y, addedVelocity.z);
+                    entity.velocityModified = true;
+
                 }
-
-
             }
         }
     }
-
-    private Optional<ItemStack> getCrossbowItem(FireworkRocketEntity fireworkEntity) {
-        // Logic to determine and return the crossbow item that fired the firework
-        // This requires tracking the source entity and checking its main-hand item
-        Entity owner = fireworkEntity.getOwner();
-        if (owner instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) owner;
-            ItemStack mainHandItem = player.getMainHandStack();
-            ItemStack offHandItem = player.getOffHandStack();
-            if (mainHandItem.getItem() instanceof CrossbowItem) {
-                return Optional.of(mainHandItem);
-            } else if (offHandItem.getItem() instanceof  CrossbowItem) {
-                return Optional.of(offHandItem);
-            }
-        }
-        return Optional.empty();
-    }
-
-    private boolean hasCustomEnchantment(ItemStack crossbow) {
-        return EnchantmentHelper.getLevel(ModEnchantments.JUMPER, crossbow) > 0;
-    }
-
 }

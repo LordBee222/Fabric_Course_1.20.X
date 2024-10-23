@@ -1,6 +1,5 @@
 package net.mac.mccourse.util;
 
-import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.mac.mccourse.MCCourseMod;
 import net.mac.mccourse.item.ModItems;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
@@ -12,6 +11,24 @@ public class ModModelPredicateProvider {
     public static void registerModModels(){
         ModelPredicateProviderRegistry.register(ModItems.DATA_TABLET, new Identifier(MCCourseMod.MOD_ID, "on"),
                 (stack, world, entity, seed) -> stack.hasNbt() ? 1f : 0);
+
+        ModelPredicateProviderRegistry.register(
+                ModItems.MARSHMALLOW_ON_STICK,
+                new Identifier("state"),
+                (stack, world, entity, seed) -> {
+                    String state = stack.getOrCreateNbt().getString("State");
+                    switch (state) {
+                        case "toasted":
+                            return 0.3f;
+                        case "golden":
+                            return 0.6f;
+                        case "burnt":
+                            return 1f;
+                        default:
+                            return 0f;
+                    }
+                }
+        );
 
         ModelPredicateProviderRegistry.register(ModItems.SCOPED_CROSSBOW, new Identifier("pull"), ((stack, world, entity, seed) -> {
             if (entity == null) return 0.0F;

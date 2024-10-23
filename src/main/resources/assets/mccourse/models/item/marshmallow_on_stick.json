@@ -1,0 +1,26 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "mccourse:item/marshmallow_on_stick_uncooked"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "state": 0.3
+      },
+      "model": "mccourse:item/marshmallow_on_stick_toasted"
+    },
+    {
+      "predicate": {
+        "state": 0.6
+      },
+      "model": "mccourse:item/marshmallow_on_stick_golden"
+    },
+    {
+      "predicate": {
+        "state": 0.9
+      },
+      "model": "mccourse:item/marshmallow_on_stick_burnt"
+    }
+  ]
+}

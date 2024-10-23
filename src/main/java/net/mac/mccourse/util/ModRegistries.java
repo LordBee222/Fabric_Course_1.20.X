@@ -4,8 +4,11 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.mac.mccourse.command.*;
+import net.mac.mccourse.entity.ModEntities;
+import net.mac.mccourse.entity.custom.PorcupineEntity;
 import net.mac.mccourse.event.AttackEntityHandler;
 import net.mac.mccourse.event.PlayerCopyHandler;
 import net.mac.mccourse.event.onUseItemHandler;
@@ -26,6 +29,11 @@ public class ModRegistries {
         registerPotionRecipes();
         registerPotionTypes();
         registerPotionItemRecipes();
+        registerAttributes();
+    }
+
+    private static void registerAttributes() {
+        FabricDefaultAttributeRegistry.register(ModEntities.PORCUPINE, PorcupineEntity.createPorcupineAttributes());
     }
 
     private static void registerFuels(){

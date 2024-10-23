@@ -11,15 +11,18 @@ import net.mac.mccourse.effect.ModEffects;
 import net.mac.mccourse.effect.TotemSicknessEffect;
 import net.mac.mccourse.enchantment.ModEnchantments;
 import net.mac.mccourse.entity.ModEntities;
+import net.mac.mccourse.entity.ai.Activity.ModActivities;
+import net.mac.mccourse.entity.ai.ModMemoryModuleTypes;
+import net.mac.mccourse.entity.brain.ModActivity;
+import net.mac.mccourse.item.KeyBinds.AdsKeybind;
 import net.mac.mccourse.item.ModItemGroup;
 import net.mac.mccourse.item.ModItems;
-import net.mac.mccourse.network.DashPacket;
-import net.mac.mccourse.network.DoubleJumpPacket;
-import net.mac.mccourse.network.ExplodePacket;
+import net.mac.mccourse.network.*;
 import net.mac.mccourse.potion.ModPotions;
 import net.mac.mccourse.sound.ModSounds;
 import net.mac.mccourse.util.ModRegistries;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -32,6 +35,7 @@ import net.minecraft.potion.Potions;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +45,6 @@ public class MCCourseMod implements ModInitializer {
 	public static boolean zoom = false;
 	public static double zoomMultiplayer = 1.0F;
 	public static String chargedPotionKey = "charged";
-	public static final TrackedData<Boolean> DOUBLE_JUMP_ATTRIBUTE = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
 	@Override
 	public void onInitialize() {
@@ -57,16 +60,21 @@ public class MCCourseMod implements ModInitializer {
 		ModPotions.registerPotions();
 		ModEntities.registerModEntities();
 		DashPacket.registerReceivers();
+		AdsPacket.registerReceivers();
 		DoubleJumpPacket.registerReceivers();
 		DashKeybind.registerKeybind();
+		AdsKeybind.registerKeybind();
 		DoubleJumpKeybind.registerKeybind();
+		SoulSpeakKeybind.registerKeybind();
+		SoulSpeakPacket.register();
+		ModActivities.registerModActivities();
+		ModMemoryModuleTypes.registerModMemoryModules();
 	}
 
-	public static boolean hasDoubleJumped(PlayerEntity player) {
-		return player.getDataTracker().get(DOUBLE_JUMP_ATTRIBUTE);
-	}
-
-	public static void setDoubleJumped(PlayerEntity player, boolean hasJumped) {
-		player.getDataTracker().set(DOUBLE_JUMP_ATTRIBUTE, hasJumped);
+	public static boolean isStoned(@Nullable LivingEntity entity) {
+		return entity != null &&
+				entity.hasStatusEffect(ModEffects.STONED) &&
+				!entity.isSpectator() &&
+				!(entity instanceof PlayerEntity player && player.isCreative());
 	}
 }

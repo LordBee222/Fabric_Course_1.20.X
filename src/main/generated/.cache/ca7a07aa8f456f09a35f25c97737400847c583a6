@@ -1,4 +1,4 @@
-// 1.20	2024-08-08T09:39:16.4763169	MC Course Mod/Model Definitions
+// 1.20	2024-10-10T18:22:38.8419002	MC Course Mod/Model Definitions
 9638169d87f42172d7d257a64965fe65d374eb80 assets\mccourse\models\item\pink_garnet_leggings_gold_trim.json
 842785d4a40b43961a4089416f559d2640213c14 assets\mccourse\models\item\pink_garnet.json
 1fe5d12b15d094f845fcd40e313b01d59d4840ab assets\mccourse\models\item\pink_garnet_chestplate_copper_trim.json
@@ -68,6 +68,7 @@ aa5208a87763b31a92e55ef5db33a83a0f8166cb assets\mccourse\models\item\pink_garnet
 209512dbed7df0c0cee2c76ddc1de52a0fe439f9 assets\mccourse\models\block\pink_garnet_button_pressed.json
 acd908598229821c1b71825766e94b516cc9dc1b assets\mccourse\models\item\raw_pink_garnet.json
 1844deab623f0a35dd5ecc1db40b9040ddb3fe96 assets\mccourse\models\block\pink_garnet_fence_gate.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets\mccourse\models\item\porcupine_spawn_egg.json
 d00174e1ce44edf6c35a66d33a2ce9d4fb0064f7 assets\mccourse\models\item\pink_garnet_chestplate_amethyst_trim.json
 fe511ef4a5bad3e0910fd06c01f5e381620c55cf assets\mccourse\models\item\pink_garnet_helmet_amethyst_trim.json
 699d2114a92e77b9bc0e9559c520ac7c4a15a32a assets\mccourse\models\item\pink_garnet_helmet_iron_trim.json

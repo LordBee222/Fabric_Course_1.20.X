@@ -2,6 +2,7 @@ package net.mac.mccourse.entity.custom;
 
 import net.mac.mccourse.MCCourseMod;
 import net.mac.mccourse.entity.ModEntities;
+import net.mac.mccourse.item.ModItems;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
@@ -29,7 +30,7 @@ public class BoomSlimeEntity extends ThrownItemEntity {
     }
 
     public BoomSlimeEntity(LivingEntity livingEntity, World world) {
-        super(ModEntities.THROWN_DICE_PROJECTILE, livingEntity, world);
+        super(ModEntities.BOOM_SLIME, livingEntity, world);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class BoomSlimeEntity extends ThrownItemEntity {
 
     @Override
     protected Item getDefaultItem() {
-        return null;
+        return ModItems.BOOM_SLIME;
     }
 
     @Override

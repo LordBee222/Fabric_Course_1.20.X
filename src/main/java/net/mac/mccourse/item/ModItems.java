@@ -3,7 +3,10 @@ package net.mac.mccourse.item;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.mac.mccourse.MCCourseMod;
 import net.mac.mccourse.block.ModBlocks;
+import net.mac.mccourse.entity.ModEntities;
+import net.mac.mccourse.entity.custom.CustomisableBombEntity;
 import net.mac.mccourse.item.custom.*;
+import net.minecraft.Bootstrap;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -84,6 +87,25 @@ public class ModItems {
     public static final Item CEREMONIAL_BLADE = registerItem("ceremonial_blade",
             new CeremonialBladeItem(ToolMaterials.NETHERITE, -2, 2, new FabricItemSettings()));
 
+    public static final Item MARSHMALLOW_ON_STICK = registerItem("marshmallow_on_stick",
+            new MarshmallowStickItem(new FabricItemSettings()));
+
+    public static final Item MARSHMALLOW = registerItem("marshmallow",
+            new Item(new FabricItemSettings().food(ModFoodComponents.MARSHMALLOW)));
+
+    public static final Item SNIPER = registerItem("sniper",
+            new CalibratedCrossbowItem(new FabricItemSettings()));
+
+    public static final Item BOMB = registerItem("bomb",
+            new BombItem(new FabricItemSettings(), 4,
+                    CustomisableBombEntity.TriggerType.FUSE,
+                    CustomisableBombEntity.BlastType.NORMAL));
+
+    public static final Item IMPACT_BOMB = registerItem("impact_bomb",
+            new ImpactBombItem(new FabricItemSettings()));
+
+    public static final Item PORCUPINE_SPAWN_EGG = registerItem("porcupine_spawn_egg",
+            new SpawnEggItem(ModEntities.PORCUPINE, 0xa86518, 0x3b260f, new FabricItemSettings()));
 
     /*
     public static final Item CHARGED_POTION = registerItem("charged_potion",
