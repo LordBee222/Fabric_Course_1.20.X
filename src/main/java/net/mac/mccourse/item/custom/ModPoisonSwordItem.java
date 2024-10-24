@@ -16,7 +16,9 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
 public class ModPoisonSwordItem extends SwordItem {
@@ -26,9 +28,35 @@ public class ModPoisonSwordItem extends SwordItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        IPlayerDoubleJumpSaver playerJumpData = (IPlayerDoubleJumpSaver) player;
-        if (DoubleJumpUtil.canJump(playerJumpData, player)){
-            DoubleJumpUtil.use(playerJumpData, player);
+        if (world instanceof ServerWorld serverWorld) {
+
+
+            Vec3d startPos = player.getCameraPosVec(1.0F);
+            Vec3d direction = player.getRotationVec(1.0F).normalize().multiply(100);
+            Vec3d endPos = startPos.add(direction);
+
+            // Perform the raycast
+            BlockHitResult hitResult = world.raycast(new RaycastContext(
+                    startPos, endPos,
+                    RaycastContext.ShapeType.COLLIDER,
+                    RaycastContext.FluidHandling.NONE,
+                    player));
+
+            Vec3d hitPos = hitResult.getPos();
+
+            // Step 2: Sample points along the ray's path
+            double step = 0.2; // Smaller step = more particles
+            Vec3d rayDirection = hitPos.subtract(startPos).normalize(); // Normalize direction
+            double distance = startPos.distanceTo(hitPos);
+
+            for (double i = 0; i < distance; i += step) {
+                Vec3d particlePos = startPos.add(rayDirection.multiply(i));
+                // Step 3: Spawn particles at the sampled position
+                serverWorld.spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, particlePos.getX(), particlePos.getY(), particlePos.getZ(), 1, 0.2, 0.2, 0.2, 0.1);
+            }
+
+            world.createExplosion(null, hitPos.getX(), hitPos.getY(), hitPos.getZ(), 5, false, World.ExplosionSourceType.TNT);
+
         }
         return super.use(world, player, hand);
     }

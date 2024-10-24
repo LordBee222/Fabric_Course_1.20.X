@@ -5,8 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import net.mac.mccourse.MCCourseMod;
 import net.mac.mccourse.entity.ModEntities;
-import net.mac.mccourse.entity.ai.Task.FireballTask;
-import net.mac.mccourse.entity.ai.Task.UnleashedSoulBlastTask;
+import net.mac.mccourse.entity.ai.Task.*;
 import net.mac.mccourse.entity.custom.PorcupineEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -15,6 +14,9 @@ import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.sensor.Sensor;
 import net.minecraft.entity.ai.brain.task.*;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.mob.HoglinBrain;
+import net.minecraft.entity.mob.HoglinEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 
@@ -25,6 +27,9 @@ public class PorcupineBrain {
     private static final UniformIntProvider LONG_JUMP_COOLDOWN_RANGE = UniformIntProvider.create(600, 1200);
     private static final UniformIntProvider RAM_COOLDOWN_RANGE = UniformIntProvider.create(600, 6000);
     private static final UniformIntProvider WALK_TOWARD_CLOSEST_ADULT_RANGE = UniformIntProvider.create(5, 16);
+
+
+
 
     public static Brain<?> create(Brain<PorcupineEntity> brain) {
         addCoreTasks(brain);
@@ -49,10 +54,10 @@ public class PorcupineBrain {
                 Activity.CORE,
                 0,
                 ImmutableList.of(
+                        new BecomeEnragedTask(),
+                        new RetreatTask(1, 10, 10),
                         new LookAroundTask(45, 90),
-                        new WanderAroundTask()/*,
-                        new TemptationCooldownTask(ModMemoryModuleTypes.FIREBALL_COOLDOWN),
-                        new TemptationCooldownTask(ModMemoryModuleTypes.UNLEASHED_SOULS_COOLDOWN)*/));
+                        new WanderAroundTask()));
     }
 
     private static void addIdleTasks(Brain<PorcupineEntity> brain) {
@@ -60,7 +65,6 @@ public class PorcupineBrain {
                 Activity.IDLE,
                 10,
                 ImmutableList.of(
-                        PacifyTask.create(MemoryModuleType.NEAREST_REPELLENT, 200),
                         GoToRememberedPositionTask.createPosBased(MemoryModuleType.NEAREST_REPELLENT, 1.0f, 8, true),
                         UpdateAttackTargetTask.create(PorcupineBrain::getNearestVisibleTargetablePlayer),
                         TaskTriggerer.runIf(PorcupineEntity::isAdult, GoToRememberedPositionTask.createEntityBased(MemoryModuleType.NEAREST_VISIBLE_ADULT_PIGLIN, 0.4f, 8, false)),
@@ -74,7 +78,8 @@ public class PorcupineBrain {
                 Activity.FIGHT,
                 10,
                 ImmutableList.of(
-                        new UnleashedSoulBlastTask(3, 1.5, 3.75),
+                        new UnleashedSoulBlastTask(6, 1.5, 3.75),
+                        new PossessionTask(),
                         new FireballTask(),
                         RangedApproachTask.create(1.0f),
                         TaskTriggerer.runIf(PorcupineEntity::isAdult, MeleeAttackTask.create(40)),
@@ -83,28 +88,31 @@ public class PorcupineBrain {
                 MemoryModuleType.ATTACK_TARGET);
     }
 
+    public static void onEnrage(PorcupineEntity porcupine){
+            porcupine.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE).setBaseValue(10);
+            porcupine.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_KNOCKBACK).setBaseValue(5);
+            porcupine.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).setBaseValue(0.5);
+            porcupine.FireballCooldown = 50;
+            porcupine.BlastCooldown = 75;
+            porcupine.AttackDowntime = 15;
+            porcupine.PossessionCooldown = 60;
+            MCCourseMod.LOGGER.info("MODIFIED ATTRUBUTES");
+    }
+
     private static RandomTask<PorcupineEntity> makeRandomWalkTask() {
         return new RandomTask<PorcupineEntity>(ImmutableList.of(Pair.of(StrollTask.create(0.4f), 2), Pair.of(GoTowardsLookTargetTask.create(0.4f, 3), 2), Pair.of(new WaitTask(30, 60), 1)));
     }
 
     public static void refreshActivities(PorcupineEntity porcupine) {
         Brain<PorcupineEntity> brain = (Brain<PorcupineEntity>) porcupine.getBrain();
-        Activity activity = brain.getFirstPossibleNonCoreActivity().orElse(null);
         brain.resetPossibleActivities(ImmutableList.of(Activity.FIGHT, Activity.AVOID, Activity.IDLE));
-        Activity activity2 = brain.getFirstPossibleNonCoreActivity().orElse(null);
         porcupine.setAttacking(brain.hasMemoryModule(MemoryModuleType.ATTACK_TARGET));
-        //if (brain.hasMemoryModule(ModMemoryModuleTypes.FIREBALL_COOLDOWN)) brain.remember(ModMemoryModuleTypes.FIREBALL_COOLDOWN, ((brain.getOptionalMemory(ModMemoryModuleTypes.FIREBALL_COOLDOWN).get()) -1));
-        //if (brain.hasMemoryModule(ModMemoryModuleTypes.UNLEASHED_SOULS_COOLDOWN)) brain.remember(ModMemoryModuleTypes.UNLEASHED_SOULS_COOLDOWN, ((brain.getOptionalMemory(ModMemoryModuleTypes.UNLEASHED_SOULS_COOLDOWN).get()) -1));
     }
 
     public static void postAttack(PorcupineEntity porcupine, MemoryModuleType<Boolean> attackToCooldown, int cooldown){
         Brain<PorcupineEntity> brain = porcupine.getBrain();
-        brain.remember(ModMemoryModuleTypes.ATTACK_ON_COOLDOWN, true, 30);
+        brain.remember(ModMemoryModuleTypes.ATTACK_ON_COOLDOWN, true, porcupine.AttackDowntime);
         brain.remember(attackToCooldown, true, cooldown);
-        MCCourseMod.LOGGER.info("Post Attack");
-        MCCourseMod.LOGGER.info("Fireball Cooling Down? " + brain.hasMemoryModule(ModMemoryModuleTypes.FIREBALL_COOLDOWN));
-        MCCourseMod.LOGGER.info("Unleashed Cooling Down? " + brain.hasMemoryModule(ModMemoryModuleTypes.UNLEASHED_SOULS_COOLDOWN));
-        MCCourseMod.LOGGER.info("Cann't Attack? " + brain.getOptionalMemory(ModMemoryModuleTypes.ATTACK_ON_COOLDOWN).get());
     }
 
 

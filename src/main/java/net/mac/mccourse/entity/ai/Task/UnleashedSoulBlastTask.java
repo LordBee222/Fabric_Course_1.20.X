@@ -16,6 +16,8 @@ import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.thrown.EggEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
@@ -36,7 +38,6 @@ public class UnleashedSoulBlastTask extends MultiTickTask<PorcupineEntity> {
         this.radius = radius;
         this.verticalVelocity = verticalKnockback;
         this.horizontalVelocity = horizontalKnockback;
-
     }
 
     // checkExtraStartConditions
@@ -58,6 +59,7 @@ public class UnleashedSoulBlastTask extends MultiTickTask<PorcupineEntity> {
                 entity.getX() + this.radius, entity.getY() + this.radius, entity.getZ() + this.radius
         ));
         world.spawnParticles(ParticleTypes.EXPLOSION_EMITTER, entity.getX(), entity.getY(), entity.getZ(), 1, 0, 0, 0, 0);
+        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.NEUTRAL, 1, 1);
 
         for (Entity target : entities) {
             Vec3d knockbackDirection = target.getPos().subtract(target.getPos()).normalize();
@@ -67,7 +69,7 @@ public class UnleashedSoulBlastTask extends MultiTickTask<PorcupineEntity> {
         }
 
 
-        PorcupineBrain.postAttack(entity, ModMemoryModuleTypes.UNLEASHED_SOULS_COOLDOWN, 150);
+        PorcupineBrain.postAttack(entity, ModMemoryModuleTypes.UNLEASHED_SOULS_COOLDOWN, entity.BlastCooldown);
     }
 
     public LivingEntity getTarget(LivingEntity entity){

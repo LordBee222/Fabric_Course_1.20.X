@@ -11,6 +11,8 @@ import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.task.MultiTickTask;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 
 
@@ -46,8 +48,9 @@ public class FireballTask extends MultiTickTask<PorcupineEntity> {
         FireballEntity fireballEntity = new FireballEntity(world, (LivingEntity)entity, x, y, z, 4);
         fireballEntity.setPosition(entity.getX(), entity.getBodyY(0.5) + 0.5, fireballEntity.getZ());
         world.spawnEntity(fireballEntity);
+        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.NEUTRAL, 1, 2);
 
-        PorcupineBrain.postAttack(entity, ModMemoryModuleTypes.FIREBALL_COOLDOWN, 100);
+        PorcupineBrain.postAttack(entity, ModMemoryModuleTypes.FIREBALL_COOLDOWN, entity.FireballCooldown);
     }
 
     public LivingEntity getTarget(LivingEntity entity){

@@ -13,11 +13,11 @@ import java.util.Optional;
 
 public class ModMemoryModuleTypes {
 
-    public static final MemoryModuleType<Integer> POSSESSION_COOLDOWN = register("possession_cooldown");
 
     public static final MemoryModuleType<Boolean> ATTACK_ON_COOLDOWN = register("attack_on_cooldown");
     public static final MemoryModuleType<Boolean> UNLEASHED_SOULS_COOLDOWN = register("unleashed_souls_cooldown");
     public static final MemoryModuleType<Boolean> FIREBALL_COOLDOWN = register("fireball_cooldown");
+    public static final MemoryModuleType<Boolean> POSSESSION_COOLDOWN = register("possession_cooldown");
 
 
 
