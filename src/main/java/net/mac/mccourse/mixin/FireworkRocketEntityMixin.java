@@ -31,9 +31,9 @@ public abstract class FireworkRocketEntityMixin {
     //double verticalVelocity = 1.5;
     //double horizontalVelocity = 3.75;
 
-    double radius = 9;
-    double verticalVelocity = 4.5;
-    double horizontalVelocity = 11.25;
+    double radius = 3;
+    double verticalVelocity = 1.5;
+    double horizontalVelocity = 3.75;
 
     @Inject(method = "explode", at = @At("HEAD"))
     private void explode(CallbackInfo info) {

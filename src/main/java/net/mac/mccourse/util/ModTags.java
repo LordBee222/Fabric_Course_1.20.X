@@ -2,6 +2,7 @@ package net.mac.mccourse.util;
 
 import net.mac.mccourse.MCCourseMod;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -34,6 +35,18 @@ public class ModTags {
         }
         private static TagKey<Item> createCommonItemTag(String name){
             return TagKey.of(RegistryKeys.ITEM, new Identifier("c", name));
+        }
+    }
+
+    public static class Entities{
+        public static final TagKey<EntityType<?>> SOULMELLOW_ALWAYS_HOSTILES =
+                createEntityTag("soulmellow_always_hostiles");
+
+        private static TagKey<EntityType<?>> createEntityTag(String name){
+            return TagKey.of(RegistryKeys.ENTITY_TYPE, new Identifier(MCCourseMod.MOD_ID, name));
+        }
+        private static TagKey<EntityType<?>> createCommonEntityTag(String name){
+            return TagKey.of(RegistryKeys.ENTITY_TYPE, new Identifier("c", name));
         }
     }
 }

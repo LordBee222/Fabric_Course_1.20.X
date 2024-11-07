@@ -1,11 +1,9 @@
 package net.mac.mccourse.entity.custom;
 
+import net.mac.mccourse.entity.ModEntities;
 import net.mac.mccourse.entity.goals.UseHauntingGoal;
 import net.mac.mccourse.item.ModItems;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Ownable;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -23,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class SoulmellowEntity extends PassiveEntity implements Ownable {
+public class SoulmellowEntity extends TameableEntity implements Angerable {
     private static final TrackedData<Integer> STATE = DataTracker.registerData(SoulmellowEntity.class, TrackedDataHandlerRegistry.INTEGER);
     @Nullable
     private UUID ownerUuid;
@@ -31,9 +29,15 @@ public class SoulmellowEntity extends PassiveEntity implements Ownable {
     private Entity owner;
 
 
-    public SoulmellowEntity(EntityType<? extends PassiveEntity> entityType, World world) {
+    public SoulmellowEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.experiencePoints = 10;
+    }
+
+    public SoulmellowEntity(World world, LivingEntity owner) {
+        super(ModEntities.SOULMELLOW, world);
+        this.experiencePoints = 10;
+        this.setOwner((PlayerEntity) owner);
     }
 
     @Override
@@ -49,19 +53,6 @@ public class SoulmellowEntity extends PassiveEntity implements Ownable {
             this.ownerUuid = nbt.getUuid("Owner");
             this.owner = null;
         }
-    }
-
-    @Nullable
-    @Override
-    public Entity getOwner() {
-        if (this.owner != null && !this.owner.isRemoved()) {
-            return this.owner;
-        }
-        if (this.ownerUuid != null && this.getWorld() instanceof ServerWorld) {
-            this.owner = ((ServerWorld)this.getWorld()).getEntity(this.ownerUuid);
-            return this.owner;
-        }
-        return null;
     }
 
     @Override
@@ -91,10 +82,34 @@ public class SoulmellowEntity extends PassiveEntity implements Ownable {
         return this.dataTracker.get(STATE) == 1;
     }
 
+    @Override
+    public int getAngerTime() {
+        return 0;
+    }
 
+    @Override
+    public void setAngerTime(int angerTime) {
 
-    public enum SoulmellowState{
-        IDLE,
-        RAMPAGING
+    }
+
+    @Nullable
+    @Override
+    public UUID getAngryAt() {
+        return null;
+    }
+
+    @Override
+    public void setAngryAt(@Nullable UUID angryAt) {
+
+    }
+
+    @Override
+    public void chooseRandomAngerTime() {
+
+    }
+
+    @Override
+    public EntityView method_48926() {
+        return null;
     }
 }

@@ -4,22 +4,15 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.mac.mccourse.MCCourseMod;
 import net.mac.mccourse.entity.ModEntities;
-import net.mac.mccourse.entity.ai.ModMemoryModuleTypes;
-import net.mac.mccourse.entity.ai.PorcupineAttackGoal;
-import net.mac.mccourse.entity.ai.PorcupineBrain;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.mac.mccourse.entity.ai.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.sensor.Sensor;
 import net.minecraft.entity.ai.brain.sensor.SensorType;
-import net.minecraft.entity.ai.brain.task.SonicBoomTask;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -32,18 +25,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.DebugInfoSender;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
-public class PorcupineEntity extends AnimalEntity
+
+public class PorcupineEntity extends TameableEntity
         implements Hoglin {
 
 
@@ -51,32 +40,14 @@ public class PorcupineEntity extends AnimalEntity
     private static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(PorcupineEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> ENRAGED = DataTracker.registerData(PorcupineEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
-    private int movementCooldownTicks;
-    protected static final ImmutableList<? extends SensorType<? extends Sensor<? super PorcupineEntity>>> SENSOR_TYPES = ImmutableList.of(
-            SensorType.NEAREST_LIVING_ENTITIES,
-            SensorType.NEAREST_PLAYERS,
-            SensorType.NEAREST_ADULT);
+    private boolean damageLinkActive;
+    private float damageRedirected;
 
-    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_MODULE_TYPES = (ImmutableList<? extends MemoryModuleType<?>>) ImmutableList.of(
-            MemoryModuleType.BREED_TARGET,
-            MemoryModuleType.MOBS,
-            MemoryModuleType.VISIBLE_MOBS,
-            MemoryModuleType.NEAREST_VISIBLE_PLAYER,
-            MemoryModuleType.NEAREST_VISIBLE_TARGETABLE_PLAYER,
-            MemoryModuleType.LOOK_TARGET,
-            MemoryModuleType.WALK_TARGET,
-            MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-            MemoryModuleType.PATH,
-            MemoryModuleType.ATTACK_TARGET,
-            MemoryModuleType.ATTACK_COOLING_DOWN,
-            MemoryModuleType.AVOID_TARGET,
-            MemoryModuleType.NEAREST_VISIBLE_ADULT,
-            MemoryModuleType.NEAREST_REPELLENT,
-            MemoryModuleType.PACIFIED,
-            ModMemoryModuleTypes.FIREBALL_COOLDOWN,
-            ModMemoryModuleTypes.UNLEASHED_SOULS_COOLDOWN,
-            ModMemoryModuleTypes.POSSESSION_COOLDOWN,
-            ModMemoryModuleTypes.ATTACK_ON_COOLDOWN);
+    private float redirectedDamageTaken;
+    private int movementCooldownTicks;
+
+
+
 
     public final AnimationState idleAnimationState = new AnimationState(), attackAnimationState = new AnimationState();
     public int idleAnimationTimeout = 0, attackAnimationTimeout = 0;
@@ -84,27 +55,27 @@ public class PorcupineEntity extends AnimalEntity
     public int FireballCooldown = 100;
     public int BlastCooldown = 150;
     public int PossessionCooldown = 120;
-    public int AttackDowntime = 30;
+    public int CallOfTheDeadCooldown = 400;
+    public int AttackDowntime = 10;
 
-    public PorcupineEntity(EntityType<? extends AnimalEntity> entityType, World world) {
+
+    public PorcupineEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    public static PorcupineEntity createWithOwner(World world, LivingEntity owner) {
+        PorcupineEntity porcupine = new PorcupineEntity(ModEntities.PORCUPINE, world);
+        porcupine.setOwner((PlayerEntity) owner);
+        return porcupine;
     }
 
     public static DefaultAttributeContainer.Builder createPorcupineAttributes() {
         return HostileEntity.createHostileAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 100.0)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 50)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3f)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 0.6f)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.0)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6.0);
-    }
-
-    public void setEnraged(boolean value){
-        this.getDataTracker().set(ENRAGED, value);
-    }
-
-    public boolean isEnraged(){
-       return this.getDataTracker().get(ENRAGED);
     }
 
     @Override
@@ -115,8 +86,7 @@ public class PorcupineEntity extends AnimalEntity
         this.movementCooldownTicks = 10;
         this.getWorld().sendEntityStatus(this, EntityStatuses.PLAY_ATTACK_SOUND);
         this.playSound(SoundEvents.ENTITY_HOGLIN_ATTACK, 1.0f, this.getSoundPitch());
-        PorcupineBrain.onAttacking(this, (LivingEntity)target);
-        return Hoglin.tryAttack(this, (LivingEntity)target);
+        return Hoglin.tryAttack(this, (LivingEntity) target);
     }
 
     @Override
@@ -133,9 +103,43 @@ public class PorcupineEntity extends AnimalEntity
             return false;
         }
         if (bl && source.getAttacker() instanceof LivingEntity) {
-            PorcupineBrain.onAttacked(this, (LivingEntity)source.getAttacker());
+            PorcupineBrain.onAttacked(this, (LivingEntity) source.getAttacker());
         }
         return bl;
+    }
+
+    public boolean hasAliveOwner() {
+        return this.getOwner() != null && this.getOwner().isAlive();
+    }
+
+    @Override
+    public boolean canAttackWithOwner(LivingEntity target, LivingEntity owner) {
+        if (target instanceof PorcupineEntity) {
+            PorcupineEntity porcupine = (PorcupineEntity)target;
+            return porcupine.getOwner() != owner;
+        }
+        if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).shouldDamagePlayer((PlayerEntity)target)) {
+            return false;
+        }
+        return true;
+      //  return !(target instanceof TameableEntity) || !((TameableEntity)target).isTamed();
+    }
+
+    public void queryDamageLinkStatus() {
+        MCCourseMod.LOGGER.info("HAS INIT MANAGER");
+        if (hasAliveOwner()) {
+            LivingEntity owner = this.getOwner();
+            if (this.distanceTo(owner) <= 30) {
+                if (!this.isDamageLinkActive() && !this.getBrain().hasMemoryModule(ModMemoryModuleTypes.REDIRECT_DAMAGE_COOLDOWN))
+                    this.setDamageLinkActive(true);
+                if (this.isDamageLinkActive() && this.getBrain().hasMemoryModule(ModMemoryModuleTypes.REDIRECT_DAMAGE_COOLDOWN))
+                    this.setDamageLinkActive(false);
+            } else {
+                this.setDamageLinkActive(false);
+            }
+        } else {
+            this.setDamageLinkActive(false);
+        }
     }
 
     @Override
@@ -146,11 +150,12 @@ public class PorcupineEntity extends AnimalEntity
                 damageSource.isOf(DamageTypes.FIREBALL) ||
                 damageSource.isOf(DamageTypes.IN_FIRE) ||
                 damageSource.isOf(DamageTypes.ON_FIRE) ||
-                damageSource.isOf(DamageTypes.UNATTRIBUTED_FIREBALL);
+                damageSource.isOf(DamageTypes.UNATTRIBUTED_FIREBALL) ||
+                damageSource.isOf(DamageTypes.FALL);
     }
 
     protected Brain.Profile<PorcupineEntity> createBrainProfile() {
-        return Brain.createProfile(MEMORY_MODULE_TYPES, SENSOR_TYPES);
+        return Brain.createProfile(PorcupineUtil.MEMORY_MODULE_TYPES, PorcupineUtil.SENSOR_TYPES);
     }
 
     @Override
@@ -162,13 +167,48 @@ public class PorcupineEntity extends AnimalEntity
         return (Brain<PorcupineEntity>) super.getBrain();
     }
 
+
+
+    public boolean isDamageLinkActive() {
+        return damageLinkActive;
+    }
+
+    public void setDamageLinkActive(boolean active) {
+        this.damageLinkActive = active;
+    }
+
+    public float getDamageRedirected() {
+        return damageRedirected;
+    }
+
+    public void setDamageRedirected(float damageRedirected) {
+        this.damageRedirected = damageRedirected;
+    }
+
     @Override
     protected void mobTick() {
+
+
         this.getWorld().getProfiler().push("porcupineBrain");
-        this.getBrain().tick((ServerWorld)this.getWorld(), this);
+        this.getBrain().tick((ServerWorld) this.getWorld(), this);
         this.getWorld().getProfiler().pop();
         PorcupineBrain.refreshActivities(this);
+
+        this.queryDamageLinkStatus();
+
+        if (this.isDamageLinkActive()) {
+            this.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0));
+            this.getOwner().addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 20, 0));
+        }
+        MCCourseMod.LOGGER.info("STATUS OF DAMAGE LINK: " + (this.isDamageLinkActive() ? "open" : "closed"));
+
+        if (this.getBrain().getOptionalMemory(ModMemoryModuleTypes.REDIRECTED_DAMAGE_TAKEN).orElse(0f) >= 30f) {
+            this.getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(), 10, false, World.ExplosionSourceType.TNT);
+            this.playSound(SoundEvents.ENTITY_WITHER_HURT, 20f, 1.6f);
+            this.getBrain().forget(ModMemoryModuleTypes.REDIRECTED_DAMAGE_TAKEN);
+        }
     }
+
 
     @Override
     public void tickMovement() {
@@ -250,13 +290,6 @@ public class PorcupineEntity extends AnimalEntity
         this.dataTracker.startTracking(ENRAGED, false);
     }
 
-
-    @Override
-    protected void sendAiDebugData() {
-        super.sendAiDebugData();
-        DebugInfoSender.sendBrainDebugData(this);
-    }
-
     public void setAttacking(boolean attacking) {
         this.dataTracker.set(ATTACKING, attacking);
     }
@@ -273,21 +306,16 @@ public class PorcupineEntity extends AnimalEntity
             --this.idleAnimationTimeout;
         }
 
-        if(this.isAttacking() && attackAnimationTimeout <= 0) {
+        if (this.isAttacking() && attackAnimationTimeout <= 0) {
             attackAnimationTimeout = 40; // Length of attack animation in ticks
             attackAnimationState.start(this.age);
         } else {
             --this.attackAnimationTimeout;
         }
 
-        if(!this.isAttacking()) {
+        if (!this.isAttacking()) {
             attackAnimationState.stop();
         }
-    }
-
-    @Override
-    public boolean shouldRenderName() {
-        return false;
     }
 
     protected void updateLimbs(float v) {
@@ -299,6 +327,11 @@ public class PorcupineEntity extends AnimalEntity
         }
 
         this.limbAnimator.updateLimbs(f, 0.2F);
+    }
+
+    @Override
+    public EntityView method_48926() {
+        return this.getWorld();
     }
 }
 

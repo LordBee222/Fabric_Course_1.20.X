@@ -4,15 +4,23 @@ package net.mac.mccourse.entity.ai.Task;
 
 import com.google.common.collect.ImmutableMap;
 import net.mac.mccourse.MCCourseMod;
+import net.mac.mccourse.entity.ModEntities;
 import net.mac.mccourse.entity.ai.ModMemoryModuleTypes;
 import net.mac.mccourse.entity.ai.PorcupineBrain;
+import net.mac.mccourse.entity.custom.AmethystShardEntity;
+import net.mac.mccourse.entity.custom.BoomSlimeEntity;
 import net.mac.mccourse.entity.custom.PorcupineEntity;
+import net.mac.mccourse.entity.custom.UnstableFallingBlockEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.MemoryModuleState;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.task.MultiTickTask;
 import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.thrown.EggEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -28,8 +36,10 @@ public class UnleashedSoulBlastTask extends MultiTickTask<PorcupineEntity> {
     private double radius;
     private double verticalVelocity;
     private double horizontalVelocity;
+    public EntityType<? extends Entity> entityToSpawn;
 
-    public UnleashedSoulBlastTask(double radius, double verticalKnockback, double horizontalKnockback) {
+
+    public UnleashedSoulBlastTask(double radius, double verticalKnockback, double horizontalKnockback, EntityType<? extends Entity> entityToSpawn) {
         super(
                 ImmutableMap.of(MemoryModuleType.ATTACK_TARGET, MemoryModuleState.VALUE_PRESENT,
                         ModMemoryModuleTypes.UNLEASHED_SOULS_COOLDOWN, MemoryModuleState.VALUE_ABSENT,
@@ -38,6 +48,7 @@ public class UnleashedSoulBlastTask extends MultiTickTask<PorcupineEntity> {
         this.radius = radius;
         this.verticalVelocity = verticalKnockback;
         this.horizontalVelocity = horizontalKnockback;
+        this.entityToSpawn = entityToSpawn;
     }
 
     // checkExtraStartConditions
@@ -67,8 +78,7 @@ public class UnleashedSoulBlastTask extends MultiTickTask<PorcupineEntity> {
             target.addVelocity(addedVelocity.x, addedVelocity.y, addedVelocity.z);
             target.velocityModified = true;
         }
-
-
+        world.addParticle(ParticleTypes.EXPLOSION_EMITTER, entity.getParticleX(1), entity.getY(), entity.getParticleZ(1), 0, 0, 0);
         PorcupineBrain.postAttack(entity, ModMemoryModuleTypes.UNLEASHED_SOULS_COOLDOWN, entity.BlastCooldown);
     }
 

@@ -4,7 +4,10 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BrewingRecipeRegisterMixin",
+    "FallingBlockEntityAccessor",
     "FireworkRocketEntityMixin",
+    "ItemEntityMixin",
+    "LivingEntityMixin",
     "StuckAmethystMixin$ShardBehavorMixin",
     "TridentEntityAccessor",
     "TridentMixin$LodgeTridentToTargetMixin",

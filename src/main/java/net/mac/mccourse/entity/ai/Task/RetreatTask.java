@@ -22,6 +22,7 @@ import java.util.List;
 
 
 public class RetreatTask extends MultiTickTask<PorcupineEntity> {
+
     private final double speed;
     private final int distance;
     private final int minDistance;
@@ -38,14 +39,12 @@ public class RetreatTask extends MultiTickTask<PorcupineEntity> {
 
     @Override
     protected boolean shouldRun(ServerWorld world, PorcupineEntity entity) {
-        MCCourseMod.LOGGER.info("Should Run? " + (entity.distanceTo(this.getTarget(entity)) <= this.minDistance));
         return entity.distanceTo(this.getTarget(entity)) <= minDistance;
     }
 
     @Override
     protected void run(ServerWorld world, PorcupineEntity entity, long time) {
         super.run(world, entity, time);
-        MCCourseMod.LOGGER.info("Ran");
         LivingEntity player = entity.getBrain().getOptionalMemory(MemoryModuleType.ATTACK_TARGET).get();
         Vec3d entityPos = entity.getPos();
         Vec3d playerPos = player.getPos();
@@ -58,6 +57,10 @@ public class RetreatTask extends MultiTickTask<PorcupineEntity> {
     public LivingEntity getTarget(LivingEntity entity){
         return entity.getBrain().getOptionalMemory(MemoryModuleType.ATTACK_TARGET).get();
     }
+
+
+
+
 }
 
 

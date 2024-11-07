@@ -2,7 +2,6 @@ package net.mac.mccourse.entity.custom;
 
 import net.mac.mccourse.entity.ModEntities;
 import net.mac.mccourse.item.ModItems;
-import net.mac.mccourse.world.CustomExplosion;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;

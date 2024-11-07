@@ -70,7 +70,6 @@ public class BoomSlimeEntity extends ThrownItemEntity {
 
             // Increment the bounce counter
             bounceCount++;
-            MCCourseMod.LOGGER.info("BOUNCES: " + bounceCount);
 
             // Play the bounce sound
             this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_SLIME_JUMP, SoundCategory.NEUTRAL, 1.0F, 1.0F);

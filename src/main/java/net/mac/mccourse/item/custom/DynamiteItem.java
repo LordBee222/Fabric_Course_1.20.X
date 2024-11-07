@@ -28,7 +28,7 @@ public class DynamiteItem extends Item {
         ItemStack itemStack = user.getStackInHand(hand);
         world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.NEUTRAL, 1f, 1f);
         if (!world.isClient) {
-            BombEntity entity = new BombEntity(user, user.getWorld(), ModEntities.AMETHYST_SHARD, Math.round(50F), 1f);
+            BombEntity entity = new BombEntity(user, user.getWorld(), EntityType.FALLING_BLOCK, Math.round(50F), 1f);
             entity.setItem(this.getDefaultStack());
             entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
             entity.setPos(user.getX(), user.getY() + (double) user.getStandingEyeHeight() - 0.10000000149011612D, user.getZ());

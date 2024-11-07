@@ -13,6 +13,7 @@ import net.mac.mccourse.enchantment.ModEnchantments;
 import net.mac.mccourse.entity.ModEntities;
 import net.mac.mccourse.entity.ai.Activity.ModActivities;
 import net.mac.mccourse.entity.ai.ModMemoryModuleTypes;
+import net.mac.mccourse.entity.ai.ModSensorTypes;
 import net.mac.mccourse.entity.brain.ModActivity;
 import net.mac.mccourse.item.KeyBinds.AdsKeybind;
 import net.mac.mccourse.item.ModItemGroup;
@@ -59,16 +60,17 @@ public class MCCourseMod implements ModInitializer {
 		ModEffects.registerEffects();
 		ModPotions.registerPotions();
 		ModEntities.registerModEntities();
-		DashPacket.registerReceivers();
-		AdsPacket.registerReceivers();
-		DoubleJumpPacket.registerReceivers();
-		DashKeybind.registerKeybind();
-		AdsKeybind.registerKeybind();
-		DoubleJumpKeybind.registerKeybind();
-		SoulSpeakKeybind.registerKeybind();
-		SoulSpeakPacket.register();
+		//DashPacket.registerReceivers();
+		//AdsPacket.registerReceivers();
+		//DoubleJumpPacket.registerReceivers();
+		//DashKeybind.registerKeybind();
+		//AdsKeybind.registerKeybind();
+		//DoubleJumpKeybind.registerKeybind();
+		//SoulSpeakKeybind.registerKeybind();
+		//SoulSpeakPacket.register();
 		ModActivities.registerModActivities();
 		ModMemoryModuleTypes.registerModMemoryModules();
+		ModSensorTypes.registerModSensors();
 	}
 
 	public static boolean isStoned(@Nullable LivingEntity entity) {

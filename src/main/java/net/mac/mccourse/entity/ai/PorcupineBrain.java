@@ -8,6 +8,7 @@ import net.mac.mccourse.entity.ModEntities;
 import net.mac.mccourse.entity.ai.Task.*;
 import net.mac.mccourse.entity.custom.PorcupineEntity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.Activity;
 import net.minecraft.entity.ai.brain.Brain;
@@ -22,12 +23,12 @@ import net.minecraft.util.math.intprovider.UniformIntProvider;
 
 import java.util.Optional;
 
+
 public class PorcupineBrain {
     private static final UniformIntProvider WALKING_SPEED = UniformIntProvider.create(5, 16);
     private static final UniformIntProvider LONG_JUMP_COOLDOWN_RANGE = UniformIntProvider.create(600, 1200);
     private static final UniformIntProvider RAM_COOLDOWN_RANGE = UniformIntProvider.create(600, 6000);
     private static final UniformIntProvider WALK_TOWARD_CLOSEST_ADULT_RANGE = UniformIntProvider.create(5, 16);
-
 
 
 
@@ -38,15 +39,7 @@ public class PorcupineBrain {
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
         brain.resetPossibleActivities();
-        //initMemories(brain);
-        //brain.remember(ModMemoryModuleTypes.ATTACK_ON_COOLDOWN, false);
         return brain;
-    }
-
-    private static void initMemories(Brain<PorcupineEntity> brain){
-        brain.remember(ModMemoryModuleTypes.FIREBALL_COOLDOWN, false);
-        brain.remember(ModMemoryModuleTypes.UNLEASHED_SOULS_COOLDOWN, false);
-
     }
 
     private static void addCoreTasks(Brain<PorcupineEntity> brain) {
@@ -54,8 +47,13 @@ public class PorcupineBrain {
                 Activity.CORE,
                 0,
                 ImmutableList.of(
-                        new BecomeEnragedTask(),
-                        new RetreatTask(1, 10, 10),
+                       // new TrackOwnerAttackerTask(),
+                        //new AttackWithOwnerTask(),
+                        UpdateAttackTargetTask.create(PorcupineBrain::getOwnerAttackingEntity),
+                        UpdateAttackTargetTask.create(PorcupineBrain::getEntityAttackingOwner),
+                        // new BecomeEnragedTask(),
+                        //new AvoidAttackTargetTask(1.0f, 5.0f, 3.0f),
+                        new FollowOwnerTask(1.2f, 4.0f, 100.0f),
                         new LookAroundTask(45, 90),
                         new WanderAroundTask()));
     }
@@ -66,7 +64,7 @@ public class PorcupineBrain {
                 10,
                 ImmutableList.of(
                         GoToRememberedPositionTask.createPosBased(MemoryModuleType.NEAREST_REPELLENT, 1.0f, 8, true),
-                        UpdateAttackTargetTask.create(PorcupineBrain::getNearestVisibleTargetablePlayer),
+                        //UpdateAttackTargetTask.create(PorcupineBrain::getNearestVisibleTargetablePlayer),
                         TaskTriggerer.runIf(PorcupineEntity::isAdult, GoToRememberedPositionTask.createEntityBased(MemoryModuleType.NEAREST_VISIBLE_ADULT_PIGLIN, 0.4f, 8, false)),
                         LookAtMobWithIntervalTask.follow(8.0f, UniformIntProvider.create(30, 60)),
                         WalkTowardClosestAdultTask.create(WALK_TOWARD_CLOSEST_ADULT_RANGE, 0.6f),
@@ -78,12 +76,12 @@ public class PorcupineBrain {
                 Activity.FIGHT,
                 10,
                 ImmutableList.of(
-                        new UnleashedSoulBlastTask(6, 1.5, 3.75),
+                        new UnleashedSoulBlastTask(6, 1.5, 3.75, ModEntities.UNSTABLE_BLOCK),
                         new PossessionTask(),
                         new FireballTask(),
-                        RangedApproachTask.create(1.0f),
-                        TaskTriggerer.runIf(PorcupineEntity::isAdult, MeleeAttackTask.create(40)),
-                        TaskTriggerer.runIf(PassiveEntity::isBaby, MeleeAttackTask.create(15)),
+                        //RangedApproachTask.create(1.0f),
+                        //TaskTriggerer.runIf(PorcupineEntity::isAdult, MeleeAttackTask.create(40)),
+                        //TaskTriggerer.runIf(PassiveEntity::isBaby, MeleeAttackTask.create(15)),
                         ForgetAttackTargetTask.create()),
                 MemoryModuleType.ATTACK_TARGET);
     }
@@ -94,9 +92,9 @@ public class PorcupineBrain {
             porcupine.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).setBaseValue(0.5);
             porcupine.FireballCooldown = 50;
             porcupine.BlastCooldown = 75;
-            porcupine.AttackDowntime = 15;
+            porcupine.AttackDowntime = 5;
             porcupine.PossessionCooldown = 60;
-            MCCourseMod.LOGGER.info("MODIFIED ATTRUBUTES");
+            porcupine.CallOfTheDeadCooldown = 200;
     }
 
     private static RandomTask<PorcupineEntity> makeRandomWalkTask() {
@@ -115,7 +113,6 @@ public class PorcupineBrain {
         brain.remember(attackToCooldown, true, cooldown);
     }
 
-
     public static boolean isNearPlayer(PorcupineEntity porcupine) {
         return porcupine.getBrain().hasMemoryModule(MemoryModuleType.PACIFIED);
     }
@@ -124,23 +121,33 @@ public class PorcupineBrain {
         if (isNearPlayer(porcupine)) {
             return Optional.empty();
         }
-        return porcupine.getBrain().getOptionalRegisteredMemory(MemoryModuleType.NEAREST_VISIBLE_TARGETABLE_PLAYER);
+        return porcupine.getBrain().getOptionalRegisteredMemory(MemoryModuleType.NEAREST_ATTACKABLE);
+
+        //return porcupine.getBrain().getOptionalRegisteredMemory(MemoryModuleType.NEAREST_VISIBLE_TARGETABLE_PLAYER);
+    }
+
+    private static Optional<? extends LivingEntity> getOwnerAttackingEntity(PorcupineEntity porcupine) {
+        if (porcupine.getOwner() == null) return Optional.empty();
+        Optional<LivingEntity> ownerAttacking = Optional.ofNullable(porcupine.getOwner().getAttacking());
+        if (ownerAttacking.isEmpty() || ownerAttacking.get() == null) return Optional.empty();
+        if (!porcupine.canAttackWithOwner(ownerAttacking.get(), porcupine.getOwner())) return Optional.empty();
+        if (ownerAttacking.get() == porcupine.getOwner() || ownerAttacking.get() == porcupine) return Optional.empty();
+        return ownerAttacking;
+    }
+
+    private static Optional<? extends LivingEntity> getEntityAttackingOwner(PorcupineEntity porcupine) {
+        if (porcupine.getOwner() == null || !porcupine.isTamed()) return Optional.empty();
+
+        if (porcupine.getOwner().getAttacker() == null && !porcupine.canAttackWithOwner(porcupine.getOwner().getAttacker(), porcupine.getOwner())) return Optional.empty();
+        if (porcupine.getOwner().getAttacker() == porcupine.getOwner() || porcupine.getOwner().getAttacker() == porcupine) return Optional.empty();
+        return Optional.ofNullable(porcupine.getOwner().getAttacker());
     }
 
     public static void onAttacked(PorcupineEntity porcupine, LivingEntity attacker) {
         Brain<PorcupineEntity> brain = porcupine.getBrain();
         brain.forget(MemoryModuleType.PACIFIED);
         brain.forget(MemoryModuleType.BREED_TARGET);
-        if (porcupine.isBaby()) {
-            return;
-        }
         targetEnemy(porcupine, attacker);
-    }
-
-    public static void onAttacking(PorcupineEntity porcupine, LivingEntity target) {
-        if (porcupine.isBaby()) {
-            return;
-        }
     }
 
 
@@ -149,6 +156,8 @@ public class PorcupineBrain {
         brain.forget(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE);
         brain.forget(MemoryModuleType.BREED_TARGET);
         brain.remember(MemoryModuleType.ATTACK_TARGET, target, 200L);
+//        brain.remember(MemoryModuleType.ATTACK_TARGET, target, 200L);
+
     }
 
     private static void targetEnemy(PorcupineEntity porcupine, LivingEntity target) {
@@ -158,9 +167,10 @@ public class PorcupineBrain {
         if (target.getType() == ModEntities.PORCUPINE) {
             return;
         }
+        /*
         if (LookTargetUtil.isNewTargetTooFar(porcupine, target, 4.0)) {
             return;
-        }
+        }*/
         if (!Sensor.testAttackableTargetPredicate(porcupine, target)) {
             return;
         }

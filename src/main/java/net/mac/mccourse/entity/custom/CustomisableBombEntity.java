@@ -3,7 +3,6 @@ package net.mac.mccourse.entity.custom;
 import net.mac.mccourse.MCCourseMod;
 import net.mac.mccourse.entity.ModEntities;
 import net.mac.mccourse.item.ModItems;
-import net.mac.mccourse.world.CustomExplosion;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -122,10 +121,6 @@ public class CustomisableBombEntity extends ThrownItemEntity {
 
     private void startFuse() {
         this.dataTracker.set(FUSE, 1);
-    }
-
-    public CustomExplosion getExplosion() {
-        return new CustomExplosion(this.getWorld(), this, this.getX(), this.getY(), this.getZ(), this.blastPower, false, Explosion.DestructionType.DESTROY);
     }
 
     @Override

@@ -72,6 +72,25 @@ public class ModEntities {
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, PorcupineEntity::new)
                     .dimensions(EntityDimensions.fixed(0.75f, 0.75f)).build());
 
+    public static EntityType<UnstableFallingBlockEntity> UNSTABLE_BLOCK = Registry.register(Registries.ENTITY_TYPE,
+            new Identifier(MCCourseMod.MOD_ID,"unstable_block"),
+            FabricEntityTypeBuilder.<UnstableFallingBlockEntity>create(SpawnGroup.MISC,UnstableFallingBlockEntity::new)
+                    .dimensions(EntityDimensions.fixed(1, 1)).build());
+
+    public static EntityType<HomingRocketEntity> HOMING_ROCKET = Registry.register(Registries.ENTITY_TYPE,
+            new Identifier(MCCourseMod.MOD_ID,"homing_rocket"),
+            FabricEntityTypeBuilder.<HomingRocketEntity>create(SpawnGroup.MISC,HomingRocketEntity::new)
+                    .dimensions(EntityDimensions.fixed(1, 1)).build());
+
+    public static EntityType<SoulShulkerBulletEntity> SOUL_SHULKER_BULLET = Registry.register(Registries.ENTITY_TYPE,
+            new Identifier(MCCourseMod.MOD_ID,"soul_shulker_bullet"),
+            FabricEntityTypeBuilder.<SoulShulkerBulletEntity>create(SpawnGroup.MISC,SoulShulkerBulletEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.3125f, 0.3125f)).build());
+
+    public static EntityType<TarotCardEntity> TAROT_CARD = Registry.register(Registries.ENTITY_TYPE,
+            new Identifier(MCCourseMod.MOD_ID,"tarot_card"),
+            FabricEntityTypeBuilder.<TarotCardEntity>create(SpawnGroup.MISC,TarotCardEntity::new)
+                    .dimensions(EntityDimensions.fixed(1, 1)).build());
 
     public static void registerModEntities() {
         MCCourseMod.LOGGER.info("Registering Mod Entities for " + MCCourseMod.MOD_ID);

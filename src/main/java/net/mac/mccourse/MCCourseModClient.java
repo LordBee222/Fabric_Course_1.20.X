@@ -15,6 +15,7 @@ import net.mac.mccourse.entity.renderer.CustomEndCrystalEntityRenderer;
 import net.mac.mccourse.render.ChargedPlayerRenderFeature;
 import net.mac.mccourse.util.ModModelPredicateProvider;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.entity.FallingBlockEntityRenderer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 
@@ -42,6 +43,10 @@ public class MCCourseModClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(ModModelLayers.PORCUPINE, PorcupineModel::getTexturedModelData);
 
         EntityRendererRegistry.register(ModEntities.PORCUPINE, PorcupineRenderer::new);
+        EntityRendererRegistry.register(ModEntities.UNSTABLE_BLOCK, FallingBlockEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.HOMING_ROCKET, FlyingItemEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.SOUL_SHULKER_BULLET, FlyingItemEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.TAROT_CARD, FlyingItemEntityRenderer::new);
 
     }
 }
